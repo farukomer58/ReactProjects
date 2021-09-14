@@ -1,0 +1,29 @@
+https://codepen.io/gaearon/pen/gWWZgR?editors=0010
+
+https://reactjs.org/docs/create-a-new-react-app.html#create-react-app
+Commands:
+npx create-react-app my-app
+cd my-app
+npm start
+
+npm run build
+(yarn build)
+npm serve download 
+npm i -g serve (basic http server)
+serve -s build -p 8000 (build folder) run in production server the production build folder
+
+fake backend jsonserv
+npm i json-server
+
+    in package.json -> "server": "json-server --watch db.json --port 5000"
+
+npm run server 
+
+
+router is not included by default we need to install package for that
+npm i react-router-dom
+
+download bootstrap
+npm i bootstrap@4.1.1
+
+ 
