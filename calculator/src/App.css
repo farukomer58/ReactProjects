@@ -1,0 +1,21 @@
+
+.calculator{
+  background-color: rgb(141, 141, 141);
+  width: 200px;
+  margin: 0 auto;
+  }
+.calculator-head{
+  background-color: rgb(85, 85, 85);
+  color:#fff; 
+  text-align: right;
+}
+.calculator-head h4{
+  padding:10px;
+}
+.calculator-body{
+  margin:0 auto;
+}
+.calculator-row{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
