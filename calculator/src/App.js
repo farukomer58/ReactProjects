@@ -7,7 +7,8 @@ function App() {
   const [isLastOperation, setIsLastOperation] = useState(false)
   const [displayValue, setDisplayValue] = useState("")
 
-  const [negative,setNegative] = useState(false)
+  const [negative, setNegative] = useState(false)
+  const [canPlaceDot,setCanPlaceDot] = useState(true)
 
   const Parser = require('expr-eval').Parser;
 
@@ -17,9 +18,34 @@ function App() {
     const value = e.target.value
 
     if (isNumber) {
-      setDisplayValue(displayValue + value)
-      setIsLastOperation(false)
-    } else if (isOperation) {
+
+      if (value==='.'){
+        if(canPlaceDot){
+          console.log(typeof (displayValue.substr(displayValue.length - 1)))
+          console.log( parseInt ("="))
+          const lastCharParsed = parseInt (displayValue.substr(displayValue.length - 1))
+            
+          if(isNaN(lastCharParsed)){
+            setDisplayValue(displayValue + "0"+value)
+            setIsLastOperation(false)
+            setCanPlaceDot(false)
+          }else{
+            console.log("falled to cast")
+            setDisplayValue(displayValue + value)
+            setIsLastOperation(false)
+            setCanPlaceDot(false)
+          }
+
+        } 
+      }else{
+        setDisplayValue(displayValue + value)
+        setIsLastOperation(false)
+      }
+
+      
+
+    } else if (isOperation && displayValue.length>0) {
+      setCanPlaceDot(true)
       if (isLastOperation) {
         // Remove last operator char from displayvalue en replace with new operator
       } else {
@@ -32,20 +58,33 @@ function App() {
         setOperations(...operations, operationValue)
       }
     } else {
+      if (value === "-") {
+        let operationValue = value
+
+        // setOperation(operationValue)
+        setDisplayValue(displayValue + operationValue)
+        setIsLastOperation(true)
+
+        setOperations(...operations, operationValue)
+      }
       if (value === "AC") {
         setDisplayValue("")
         setOperations([])
       }
       if (value === "+/-") {
-        if(negative){
-          setDisplayValue("-"+displayValue)
+
+        //if value is already negative
+        if (displayValue > 0) {
+          setDisplayValue("-" + displayValue)
           setNegative(!negative)
-        }else{
-          try{
-            setDisplayValue(displayValue.replace('-',''))
+        } else {
+          try {
+            setDisplayValue(Math.abs(displayValue))
             setNegative(!negative)
-          }catch(e){}
+          } catch (e) { }
+
         }
+
         // setOperations([])
       }
     }
@@ -61,9 +100,10 @@ function App() {
         let expression = parser.parse(displayValue);
         var result = expression.evaluate({ x: 3 });
 
-        setDisplayValue(result)
+        setDisplayValue(result.toString())
         setOperations([])
-      }catch(e){
+        setNegative((result < 0))
+      } catch (e) {
 
       }
     }
