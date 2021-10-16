@@ -20,6 +20,7 @@ function App() {
     console.log(value)
 
     if (isNumber) {
+      setIsLastOperation(false)
 
       if (value==='.'){
         if(canPlaceDot){
@@ -45,6 +46,9 @@ function App() {
       setCanPlaceDot(true)
       if (isLastOperation) {
         // Remove last operator char from displayvalue en replace with new operator
+        let newDisplayValue = displayValue.slice(0, -1);
+        setDisplayValue(newDisplayValue + value)
+        setIsLastOperation(true)
       } else {
         let operationValue = value
 
@@ -97,7 +101,7 @@ function App() {
         let expression = parser.parse(displayValue);
         let result = expression.evaluate({ x: 3 });
 
-        setDisplayValue(result.toString())
+        setDisplayValue(isNaN(result)?"Error":result.toString())
         setOperations([])
         setCanPlaceDot(result.toString().includes(".")?false:true)
         setNegative((result < 0))
