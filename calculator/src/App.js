@@ -16,21 +16,19 @@ function App() {
   const setClickedButton = (e, isNumber, isOperation) => {
     e.preventDefault()
     const value = e.target.value
+    console.log(displayValue)
+    console.log(value)
 
     if (isNumber) {
 
       if (value==='.'){
         if(canPlaceDot){
-          console.log(typeof (displayValue.substr(displayValue.length - 1)))
-          console.log( parseInt ("="))
           const lastCharParsed = parseInt (displayValue.substr(displayValue.length - 1))
-            
           if(isNaN(lastCharParsed)){
             setDisplayValue(displayValue + "0"+value)
             setIsLastOperation(false)
             setCanPlaceDot(false)
           }else{
-            console.log("falled to cast")
             setDisplayValue(displayValue + value)
             setIsLastOperation(false)
             setCanPlaceDot(false)
@@ -41,7 +39,6 @@ function App() {
         setDisplayValue(displayValue + value)
         setIsLastOperation(false)
       }
-
       
 
     } else if (isOperation && displayValue.length>0) {
@@ -79,7 +76,7 @@ function App() {
           setNegative(!negative)
         } else {
           try {
-            setDisplayValue(Math.abs(displayValue))
+            setDisplayValue(Math.abs(displayValue).toString())
             setNegative(!negative)
           } catch (e) { }
 
@@ -98,10 +95,11 @@ function App() {
       try {
         const parser = new Parser();
         let expression = parser.parse(displayValue);
-        var result = expression.evaluate({ x: 3 });
+        let result = expression.evaluate({ x: 3 });
 
         setDisplayValue(result.toString())
         setOperations([])
+        setCanPlaceDot(result.toString().includes(".")?false:true)
         setNegative((result < 0))
       } catch (e) {
 
@@ -120,7 +118,7 @@ function App() {
           <button onClick={(e) => setClickedButton(e, false, false)} value="AC">AC</button>
           <button onClick={(e) => setClickedButton(e, false, false)} value="+/-">+/-</button>
           <button onClick={(e) => setClickedButton(e, false, true)} value="%">%</button>
-          <button onClick={(e) => setClickedButton(e, false, true)} value="/"><span style={{ fontSize: "1rem" }}>&divide;</span></button>
+          <button onClick={(e) => setClickedButton(e, false, true)} value="/" style={{ fontSize: "1rem" }}>&divide;</button>
         </div>
         <div className="calculator-row">
           <button onClick={(e) => setClickedButton(e, true, false)} value="7">7</button>
