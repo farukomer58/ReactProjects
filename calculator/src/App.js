@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import './App.css';
+import CalculatorHead from "./components/CalculatorHead";
 import KeyRow from './components/KeyRow'
 
 function App() {
@@ -63,8 +64,10 @@ function App() {
   const [negative, setNegative] = useState(false)
   const [canPlaceDot, setCanPlaceDot] = useState(true)
 
+  // Used to calculate from a string
   const Parser = require('expr-eval').Parser;
 
+  // Register the clicked button key
   const setClickedButton = (e, isNumber, isOperation) => {
     e.preventDefault()
     const value = e.target.value
@@ -145,6 +148,7 @@ function App() {
     }
   }
 
+  // Calculate the Result filled in the display component
   const calculate = (e) => {
     e.preventDefault()
     const value = e.target.value
@@ -165,6 +169,7 @@ function App() {
     }
   }
 
+  // Register the key press and add to calculation
   const handleKeyPress = (event) => {
     console.log(event.key)
     if (event.key === '=' || event.key === 'Enter') {
@@ -178,10 +183,9 @@ function App() {
         setClickedButton(event, pressedKey.isNumber, pressedKey.isOperation)
       }
     }
-
-
   }
 
+  // Also listen to keyboard click for buttons
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
     return function cleanupListener() {
@@ -192,16 +196,14 @@ function App() {
   return (
     <div className="calculator">
       <div className="calculator-body">
-        <div className="calculator-head">
-          {/* display result */}
-          <h4>{displayValue}</h4>
-        </div>
 
-        {keyData.map((keyRow,index) => {
-          return <KeyRow key={index} keyRow={keyRow} setClickedButton={setClickedButton} calculate={calculate}/>
+        {/* display result */}
+        <CalculatorHead displayValue={displayValue} />
+
+        {/* display Button keys */}
+        {keyData.map((keyRow, index) => {
+          return <KeyRow key={index} keyRow={keyRow} setClickedButton={setClickedButton} calculate={calculate} />
         })}
-
-
 
       </div>
     </div>
